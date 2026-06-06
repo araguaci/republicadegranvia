@@ -15,23 +15,23 @@
   <line x1="100" y1="80" x2="1100" y2="80" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
   
   <text x="600" y="160" font-family="Playfair Display, serif" font-size="72" font-weight="700" text-anchor="middle" fill="#e8e6e1" letter-spacing="2">
-    A República
+    Capítulo IV
   </text>
   
   <text x="600" y="240" font-family="Playfair Display, serif" font-size="64" font-weight="700" text-anchor="middle" fill="url(#goldGradient)" letter-spacing="3">
-    de Granvia
+    A Tornozeleira e o Animal
   </text>
   
   <text x="600" y="310" font-family="EB Garamond, serif" font-size="28" text-anchor="middle" fill="#c8c6c1" font-style="italic">
-    Uma novela sobre poder, traição
+    Em que o mais forte dos homens
   </text>
   
   <text x="600" y="350" font-family="EB Garamond, serif" font-size="28" text-anchor="middle" fill="#c8c6c1" font-style="italic">
-    e o silêncio dos que deveriam falar
+    é apanhado no único momento em que é fraco
   </text>
   
   <text x="600" y="420" font-family="Space Mono, monospace" font-size="20" text-anchor="middle" fill="url(#goldGradient)" letter-spacing="4">
-    — Ficção Política —
+    — Maquiavel —
   </text>
   
   <line x1="100" y1="480" x2="1100" y2="480" stroke="url(#goldGradient)" stroke-width="1" opacity="0.4"/>
@@ -41,6 +41,6 @@
   </text>
   
   <text x="600" y="580" font-family="EB Garamond, serif" font-size="14" text-anchor="middle" fill="#888682">
-    Sete capítulos · Sun Tzu · Maquiavel · Orwell · Gramsci
+    A República de Granvia
   </text>
 </svg>
