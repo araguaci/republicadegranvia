@@ -621,6 +621,28 @@ body {
 
 .footer-sep { color: var(--cinza-borda); }
 
+.footer-credit {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 0.5px solid var(--cinza-borda-suave);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--creme-faint);
+}
+
+.footer-credit a {
+  color: var(--ouro-suave);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-credit a:hover {
+  color: var(--ouro);
+}
+
 /* ============ HERO IMAGEM (CAPÍTULOS) ============ */
 .cap-hero {
   width: 100%;
