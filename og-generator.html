@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Sharecard Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1a1515; padding: 40px; font-family: Arial, sans-serif; }
+    
+    .generator-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    h1 { color: #d4a574; margin-bottom: 20px; }
+    
+    .canvas-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .canvas-wrapper {
+      background: #0a0a0a;
+      padding: 20px;
+      border: 1px solid #d4a574;
+      aspect-ratio: 1200/630;
+    }
+    
+    canvas {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #444;
+    }
+    
+    .controls {
+      padding: 20px;
+      background: #0f0f0f;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      color: #d4a574;
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      background: #1a1515;
+      border: 1px solid #444;
+      color: #e8e6e1;
+      font-family: inherit;
+      border-radius: 2px;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      font-size: 12px;
+    }
+    
+    button {
+      background: #d4a574;
+      color: #0a0a0a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      width: 100%;
+    }
+    
+    button:hover {
+      background: #e8c494;
+    }
+    
+    .preview-section {
+      margin-top: 40px;
+      padding: 20px;
+      background: #0f0f0f;
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    
+    .preview-section h2 {
+      color: #d4a574;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="generator-container">
+    <h1>📸 OG Sharecard Generator</h1>
+    
+    <div class="canvas-section">
+      <div class="canvas-wrapper">
+        <canvas id="ogCanvas" width="1200" height="630"></canvas>
+      </div>
+      
+      <div class="controls">
+        <div class="control-group">
+          <label>Título Principal</label>
+          <input type="text" id="mainTitle" value="A República">
+        </div>
+        
+        <div class="control-group">
+          <label>Título Secundário</label>
+          <input type="text" id="subTitle" value="de Granvia">
+        </div>
+        
+        <div class="control-group">
+          <label>Descrição</label>
+          <textarea id="description">Uma novela sobre poder, traição e o silêncio dos que deveriam falar</textarea>
+        </div>
+        
+        <div class="control-group">
+          <label>Rótulo (Categoria)</label>
+          <input type="text" id="label" value="Ficção Política">
+        </div>
+        
+        <div class="control-group">
+          <label>URL</label>
+          <input type="text" id="url" value="republicadegranvia.vercel.app">
+        </div>
+        
+        <div class="control-group">
+          <label>Rodapé</label>
+          <input type="text" id="footer" value="Sete capítulos · Sun Tzu · Maquiavel · Orwell · Gramsci">
+        </div>
+        
+        <button onclick="generateImage()">🎨 Gerar Imagem</button>
+      </div>
+    </div>
+    
+    <div class="preview-section">
+      <h2>📥 Ações</h2>
+      <div class="button-group">
+        <button onclick="downloadPNG()">⬇️ Baixar como PNG</button>
+        <button onclick="copySVG()">📋 Copiar SVG</button>
+      </div>
+      <p style="color: #888; margin-top: 15px; font-size: 12px;">
+        Dica: Use este gerador para criar variações de sharecards para cada capítulo. 
+        Salve as imagens em <code>/images/og-*.jpg</code>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('ogCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const colors = {
+      dark: '#0a0a0a',
+      darkMid: '#1a1515',
+      gold: '#d4a574',
+      goldDark: '#a67c52',
+      light: '#e8e6e1',
+      lightMid: '#c8c6c1',
+      lightDim: '#a8a6a1',
+      dim: '#888682'
+    };
+    
+    function drawGradient(x, y, w, h, color1, color2) {
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      return gradient;
+    }
+    
+    function generateImage() {
+      const mainTitle = document.getElementById('mainTitle').value;
+      const subTitle = document.getElementById('subTitle').value;
+      const description = document.getElementById('description').value;
+      const label = document.getElementById('label').value;
+      const url = document.getElementById('url').value;
+      const footer = document.getElementById('footer').value;
+      
+      // Background
+      const bgGradient = drawGradient(0, 0, canvas.width, canvas.height, colors.dark, colors.darkMid);
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Top line
+      ctx.strokeStyle = colors.gold;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(100, 80);
+      ctx.lineTo(1100, 80);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      
+      // Main title
+      ctx.font = 'bold 72px "Playfair Display", serif';
+      ctx.fillStyle = colors.light;
+      ctx.textAlign = 'center';
+      ctx.letterSpacing = '2px';
+      ctx.fillText(mainTitle, 600, 160);
+      
+      // Sub title
+      ctx.font = 'bold 64px "Playfair Display", serif';
+      ctx.fillStyle = colors.gold;
+      ctx.letterSpacing = '3px';
+      ctx.fillText(subTitle, 600, 240);
+      
+      // Description
+      ctx.font = 'italic 28px "EB Garamond", serif';
+      ctx.fillStyle = colors.lightMid;
+      ctx.letterSpacing = '0px';
+      const descLines = description.split('\n');
+      let y = 310;
+      descLines.forEach((line, idx) => {
+        ctx.fillText(line, 600, y + (idx * 40));
+      });
+      
+      // Label
+      ctx.font = '20px "Space Mono", monospace';
+      ctx.fillStyle = colors.gold;
+      ctx.letterSpacing = '4px';
+      ctx.fillText(`— ${label} —`, 600, 420);
+      
+      // Bottom line
+      ctx.strokeStyle = colors.gold;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.moveTo(100, 480);
+      ctx.lineTo(1100, 480);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      
+      // URL
+      ctx.font = '16px "Space Mono", monospace';
+      ctx.fillStyle = colors.lightDim;
+      ctx.letterSpacing = '1px';
+      ctx.fillText(url, 600, 540);
+      
+      // Footer
+      ctx.font = '14px "EB Garamond", serif';
+      ctx.fillStyle = colors.dim;
+      ctx.letterSpacing = '0px';
+      ctx.fillText(footer, 600, 580);
+    }
+    
+    function downloadPNG() {
+      generateImage();
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'og-sharecard.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+    
+    function copySVG() {
+      const svg = document.querySelector('svg');
+      if (!svg) {
+        alert('Gere a imagem primeiro');
+        return;
+      }
+      const svgString = new XMLSerializer().serializeToString(svg);
+      navigator.clipboard.writeText(svgString).then(() => {
+        alert('SVG copiado para a área de transferência!');
+      });
+    }
+    
+    // Initial render
+    generateImage();
+  </script>
+</body>
+</html>
