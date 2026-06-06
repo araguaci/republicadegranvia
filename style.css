@@ -621,6 +621,31 @@ body {
 
 .footer-sep { color: var(--cinza-borda); }
 
+/* ============ HERO IMAGEM (CAPÍTULOS) ============ */
+.cap-hero {
+  width: 100%;
+  height: 400px;
+  margin: 0 0 3rem 0;
+  position: relative;
+  overflow: hidden;
+  border: 0.5px solid var(--cinza-borda);
+}
+
+.cap-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cap-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(10,9,7,0.3) 100%);
+  pointer-events: none;
+}
+
 /* ============ CAPÍTULO PAGE ============ */
 .capitulo-page {
   max-width: var(--reading-width);
@@ -864,6 +889,11 @@ body {
   .cap-page-texto p {
     text-align: left;
   }
+
+  .cap-hero {
+    height: 300px;
+    margin: 0 0 2.5rem 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -885,5 +915,10 @@ body {
 
   .p-inicial {
     align-self: flex-start;
+  }
+
+  .cap-hero {
+    height: 250px;
+    margin: 0 0 2rem 0;
   }
 }
